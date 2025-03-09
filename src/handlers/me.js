@@ -8,14 +8,10 @@ const meHandler = async (req, res) => {
     }
     try {
         const command = new GetCommand({ TableName: TABLE_NAME, Key: { email: userEmail } });
-        console.log("Buscando usuario con email:", userEmail);
-
         const data = await dynamoDB.send(command);
-
         if (!data.Item) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         res.json({ id: data.Item.id, name: data.Item.name, email: data.Item.email, createdAt: data.Item.createdAt });
     } catch (error) {
         console.error('Error fetching user:', error);

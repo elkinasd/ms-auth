@@ -17,3 +17,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Auth service running at http://localhost:${PORT}`);
 });
+
+//Start server yarn start dev
