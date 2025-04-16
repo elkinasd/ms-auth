@@ -1,9 +1,15 @@
 const jwt = require('jsonwebtoken');
 
 const generateToken = (userId, email) => {
-    return jwt.sign({ userId: userId, userEmail: email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
-};
+    const secret = process.env.JWT_SECRET;
+    const expiresIn = process.env.JWT_EXPIRATION || '1h';
 
+    if (!secret) {
+        throw new Error("JWT_SECRET not configured");
+    }
+
+    return jwt.sign({ userId, userEmail: email }, secret, { expiresIn });
+};
 
 const verifyToken = (token) => {
     try {
