@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const { dynamoDB, TABLE_NAME } = require('../../config/dynamoClient');
 const { PutCommand } = require('@aws-sdk/lib-dynamodb');
 const { generateToken } = require('../../config/jwt');
+const User = require('../models/User');
 
 const registerHandler = async (req, res) => {
     const { name, email, password } = req.body;
@@ -14,13 +15,13 @@ const registerHandler = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = uuidv4();
 
-    const newUser = {
+    const newUser = new User({
         id: userId,
         name,
         email: email.toLowerCase(),
         passwordHash: hashedPassword,
         createdAt: new Date().toISOString()
-    };
+    });
 
     try {
         await dynamoDB.send(new PutCommand({ TableName: TABLE_NAME, Item: newUser }));

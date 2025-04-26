@@ -3,12 +3,12 @@ const { check } = require('express-validator');
 const { registerHandler } = require('../handlers/register');
 const { loginHandler } = require('../handlers/login');
 const { meHandler } = require('../handlers/me');
+const { createProfileHandler, getProfileHandler, updateProfileHandler } = require('../handlers/profile/index');
 const authMiddleware = require('../middlewares/authMiddleware');
 const validateFields = require('../middlewares/validateFields');
 
 const router = express.Router();
 
-// Register Route
 router.post(
     '/register',
     [
@@ -19,7 +19,6 @@ router.post(
     ],
     registerHandler
 );
-
 router.post(
     '/login',
     [
@@ -29,7 +28,15 @@ router.post(
     ],
     loginHandler
 );
+router.get(
+    '/me', 
+    authMiddleware, 
+    meHandler
+);
 
-router.get('/me', authMiddleware, meHandler);
+//Rutas del perfil
+router.post('/profile', authMiddleware, createProfileHandler);
+router.get('/profile', authMiddleware, getProfileHandler);
+router.put('/profile', authMiddleware, updateProfileHandler);
 
 module.exports = router;
