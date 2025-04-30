@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const { registerHandler } = require('../handlers/register');
 const { loginHandler } = require('../handlers/login');
 const { meHandler } = require('../handlers/me');
-const { createProfileHandler, getProfileHandler, updateProfileHandler } = require('../handlers/profile/index');
+const { createProfileHandler, getProfileHandler, updateProfileHandler, uploadProfilePhotoHandler } = require('../handlers/profile/index');
 const authMiddleware = require('../middlewares/authMiddleware');
 const validateFields = require('../middlewares/validateFields');
 
@@ -29,8 +29,8 @@ router.post(
     loginHandler
 );
 router.get(
-    '/me', 
-    authMiddleware, 
+    '/me',
+    authMiddleware,
     meHandler
 );
 
@@ -38,5 +38,7 @@ router.get(
 router.post('/profile', authMiddleware, createProfileHandler);
 router.get('/profile', authMiddleware, getProfileHandler);
 router.put('/profile', authMiddleware, updateProfileHandler);
+router.post('/profile/photo', authMiddleware, uploadProfilePhotoHandler);
+
 
 module.exports = router;
