@@ -15,14 +15,14 @@ const registerHandler = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = uuidv4();
 
-    const newUser = new User({
-        id: userId,
+    const newUser = new User(
+        userId,
         name,
-        email: email.toLowerCase(),
-        passwordHash: hashedPassword,
-        createdAt: new Date().toISOString()
-    });
-
+        email,
+        hashedPassword,
+        new Date().toISOString()
+    );
+    
     try {
         await dynamoDB.send(new PutCommand({ TableName: TABLE_NAME, Item: newUser }));
         
