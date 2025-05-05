@@ -20,6 +20,11 @@ async function uploadProfilePhotoHandler(req, res) {
       return res.status(400).json({ message: 'No se subió ninguna foto' });
     }
 
+    const validMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!validMimeTypes.includes(req.file.mimetype)) {
+      return res.status(400).json({ message: 'Formato de archivo no soportado' });
+    }
+
     try {
       const photoUrl = await uploadToS3(req.file);
       await dynamoDB.send(new UpdateCommand({
@@ -33,13 +38,13 @@ async function uploadProfilePhotoHandler(req, res) {
 
       return res.json({ photoUrl });
     } catch (e) {
-        console.error('🔥 Error subiendo la foto:', e);
-        return res.status(500).json({
-          message: 'Error subiendo la foto a S3',
-          error: e.message,
-          details: e.stack
-        });
-      }      
+      console.error('🔥 Error subiendo la foto:', e);
+      return res.status(500).json({
+        message: 'Error subiendo la foto a S3',
+        error: e.message,
+        details: e.stack
+      });
+    }
   });
 }
 

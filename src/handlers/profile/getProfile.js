@@ -21,6 +21,7 @@ const getProfileHandler = async (req, res) => {
             document: data.Item.document,
             city: data.Item.city,
             department: data.Item.department,
+            photoUrl: data.Item.photoUrl,
             createdAt: data.Item.createdAt
         });
     } catch (error) {

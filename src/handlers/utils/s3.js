@@ -8,6 +8,7 @@ async function uploadToS3(file) {
     Key: key,
     Body: file.buffer,
     ContentType: file.mimetype,
+    ContentLength: file.size 
   }));
   return `https://${process.env.S3_IMAGE_PROFILE}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 }
