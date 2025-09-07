@@ -6,7 +6,6 @@ const { meHandler } = require('../handlers/me');
 const { createProfileHandler, getProfileHandler, updateProfileHandler, uploadProfilePhotoHandler } = require('../handlers/profile/index');
 const authMiddleware = require('../middlewares/authMiddleware');
 const validateFields = require('../middlewares/validateFields');
-const contactHandler = require('../handlers/contact/contact');
 
 const router = express.Router();
 
@@ -34,8 +33,6 @@ router.get(
     authMiddleware,
     meHandler
 );
-
-router.post('/', contactHandler);
 
 //Rutas del perfil
 router.post('/profile', authMiddleware, createProfileHandler);
