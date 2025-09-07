@@ -24,4 +24,6 @@ app.get('/', (req, res) => {
     res.json({ message: 'Auth service is running! 🚀' });
 });
 
+
+
 module.exports = app;

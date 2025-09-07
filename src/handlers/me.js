@@ -12,7 +12,7 @@ const meHandler = async (req, res) => {
         if (!data.Item) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json({ id: data.Item.id, name: data.Item.name, email: data.Item.email, createdAt: data.Item.createdAt });
+        res.json({ id: data.Item.id, name: data.Item.name, email: data.Item.email, user: data.Item.user, createdAt: data.Item.createdAt });
     } catch (error) {
         console.error('Error fetching user:', error);
         res.status(500).json({ message: 'Error fetching user data' });

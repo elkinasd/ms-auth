@@ -6,7 +6,7 @@ const { generateToken } = require('../../config/jwt');
 const User = require('../models/User');
 
 const registerHandler = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, user, email, password } = req.body;
 
     if (!name || !email || !password) {
         return res.status(400).json({ message: 'All fields are required' });
@@ -18,6 +18,7 @@ const registerHandler = async (req, res) => {
     const newUser = new User({
         id: userId,
         name,
+        user,
         email: email,
         passwordHash: hashedPassword,
         createdAt: new Date().toISOString()
@@ -26,9 +27,9 @@ const registerHandler = async (req, res) => {
     try {
         await dynamoDB.send(new PutCommand({ TableName: TABLE_NAME, Item: newUser }));
         
-        const token = generateToken(userId, email);
+        const token = generateToken(userId, email, user);
 
-        res.status(201).json({ message: 'User registered successfully', token });
+        res.status(201).json({ message: 'User registered successfully', token, user });
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ message: 'Error registering user' });
