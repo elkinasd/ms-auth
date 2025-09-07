@@ -6,6 +6,7 @@ const contactRoutes = require('./routes/contact.routes');
 
 const app = express();
 
+app.use(express.json());
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'OPTIONS'],
@@ -21,7 +22,9 @@ app.use('/auth', (req, res, next) => {
     }
 });
 
-app.use('/contact', express.json(), contactRoutes);
+app.use('/contact', (req, res, next) => {
+    express.json()(req, res, () => contactRoutes(req, res, next));
+});
 
 app.get('/', (req, res) => {
     res.json({ message: 'Auth service is running! 🚀' });
